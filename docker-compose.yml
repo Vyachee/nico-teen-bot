@@ -1,0 +1,55 @@
+version: '3'
+services:
+#  bot-app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - bot-redis
+#    image: bot-app
+#    container_name: bot-app
+#    volumes:
+#      - ./:/opt
+#      - node_modules_app:/opt/node_modules
+#    networks:
+#      - bot-network
+#    logging:
+#      driver: 'json-file'
+#      options:
+#        max-file: '5'
+#        max-size: '100m'
+#    command: npm run start:prod
+#    restart: always
+
+  bot-redis:
+    image: redis:7.0-alpine3.18
+    container_name: bot-redis
+    env_file:
+      - .env
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - './cache:/data'
+    networks:
+      - bot-network
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '5'
+        max-size: '100m'
+    healthcheck:
+      test: 'redis-cli ping -a $REDIS_PASSWORD'
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    restart: always
+
+networks:
+  bot-network:
+    driver: bridge
+
+volumes:
+  node_modules_app:
+  db:
+    driver: local
