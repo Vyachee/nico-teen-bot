@@ -3,7 +3,7 @@ import { SceneContext } from 'telegraf/typings/scenes';
 type ExtendedSession = {
   session: {
     firstLoggedDate: Date;
-    log: { date: Date; count: number }[];
+    log: { date: string; count: number }[];
     lastLoggedDate: Date;
     lang: string;
   };
