@@ -1,6 +1,6 @@
 import { Ctx, On, Scene, SceneEnter } from 'nestjs-telegraf';
 import { SessionContext } from '../../config/SessionContext';
-import { languages } from '../../../../languages';
+import { languages } from '../../../languages';
 import { deunionize } from 'telegraf';
 import { differenceInDays } from 'date-fns';
 

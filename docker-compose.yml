@@ -1,25 +1,25 @@
 version: '3'
 services:
-#  bot-app:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    depends_on:
-#      - bot-redis
-#    image: bot-app
-#    container_name: bot-app
-#    volumes:
-#      - ./:/opt
-#      - node_modules_app:/opt/node_modules
-#    networks:
-#      - bot-network
-#    logging:
-#      driver: 'json-file'
-#      options:
-#        max-file: '5'
-#        max-size: '100m'
-#    command: npm run start:prod
-#    restart: always
+  bot-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - bot-redis
+    image: bot-app
+    container_name: bot-app
+    volumes:
+      - ./:/opt
+      - node_modules_app:/opt/node_modules
+    networks:
+      - bot-network
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '5'
+        max-size: '100m'
+    command: npm run start:prod
+    restart: always
 
   bot-redis:
     image: redis:7.0-alpine3.18

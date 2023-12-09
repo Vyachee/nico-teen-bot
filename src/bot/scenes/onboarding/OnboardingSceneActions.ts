@@ -2,7 +2,7 @@ import { Action, Ctx, Scene, SceneEnter } from 'nestjs-telegraf';
 import { SessionContext } from '../../config/SessionContext';
 import { languageKeyboard } from './Keyboard';
 import { deunionize } from 'telegraf';
-import { languages } from '../../../../languages';
+import { languages } from '../../../languages';
 
 @Scene('onboarding')
 export class OnboardingSceneActions {
