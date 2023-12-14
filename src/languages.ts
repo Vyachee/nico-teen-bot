@@ -7,6 +7,7 @@ const ru = {
   buttons: {
     smoked: 'Сигарета выкурена',
     history: 'История',
+    lastUsed: 'Сколько дней прошло?',
   },
 };
 const en = {
@@ -18,6 +19,7 @@ const en = {
   buttons: {
     smoked: 'I just smoked',
     history: 'History',
+    lastUsed: 'How much time passed?',
   },
 };
 

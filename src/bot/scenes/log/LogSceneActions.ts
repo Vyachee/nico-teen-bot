@@ -16,6 +16,7 @@ export class LogSceneActions {
   constructor() {}
   @SceneEnter()
   async enter(@Ctx() ctx: SessionContext) {
+    console.log(languages[ctx.session.lang].main_menu);
     await ctx.reply(languages[ctx.session.lang].main_menu, {
       reply_markup: mainKeyboard(ctx.session.lang),
     });
@@ -26,17 +27,23 @@ export class LogSceneActions {
     const text = deunionize(ctx.message).text;
 
     if (text === languages[ctx.session.lang].buttons.smoked) {
-      return this.smkoked(ctx);
+      return this.smoked(ctx);
     }
 
     if (text === languages[ctx.session.lang].buttons.history) {
       return this.history(ctx);
     }
 
-    await ctx.reply('wtf');
+    if (text === languages[ctx.session.lang].buttons.lastUsed) {
+      return this.howMuchTime(ctx);
+    }
+
+    await ctx.reply('wtf', {
+      reply_markup: mainKeyboard(ctx.session.lang),
+    });
   }
 
-  async smkoked(ctx: SessionContext) {
+  async smoked(ctx: SessionContext) {
     const history = ctx.session.log || [];
     const lastUsed = history?.at(-1);
     history.push({
@@ -61,7 +68,10 @@ export class LogSceneActions {
   }
 
   async history(ctx: SessionContext) {
-    const history = ctx.session.log;
+    const history = ctx?.session?.log;
+    if (!history) {
+      return ctx.reply('wtf');
+    }
     const groupped = {};
     for (const historyElement of history) {
       const key = historyElement.date.split(' ')[0];
@@ -78,7 +88,26 @@ export class LogSceneActions {
       }
     }
 
-    await ctx.reply(message);
+    await ctx.reply(message, {
+      reply_markup: mainKeyboard(ctx.session.lang),
+    });
     await this.enter(ctx);
+  }
+
+  async howMuchTime(ctx: SessionContext) {
+    const last = ctx?.session?.log?.at(-1);
+    if (!last) {
+      return ctx.reply('wtf');
+    }
+    const date = parse(last.date, 'dd.MM.yyyy HH:mm:ss', new Date());
+    const differenceMinutes = differenceInMinutes(new Date(), date);
+    const differenceHours = differenceInHours(new Date(), date);
+    await ctx.reply(
+      `С последнего раза прошло ${differenceMinutes} минут (${differenceHours} часов)`,
+      {
+        reply_markup: mainKeyboard(ctx.session.lang),
+      },
+    );
+    return this.enter(ctx);
   }
 }

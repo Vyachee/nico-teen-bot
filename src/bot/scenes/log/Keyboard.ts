@@ -6,6 +6,7 @@ export function mainKeyboard(lang): ReplyKeyboardMarkup {
     keyboard: [
       [languages[lang].buttons.smoked],
       [languages[lang].buttons.history],
+      [languages[lang].buttons.lastUsed],
     ],
   };
 }
